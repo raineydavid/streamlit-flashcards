@@ -20,7 +20,7 @@ for message in st.session_state.messages:
 
 # Function to create a flashcard
 def generate_flashcard(topic):
-    response = client.Completion.create(
+    response = client.chat.completions.create(
         model=st.session_state["openai_model"],
         prompt=f"Generate a flashcard about: {topic}",
         max_tokens=150
