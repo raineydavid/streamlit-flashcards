@@ -2,10 +2,10 @@ from openai import OpenAI
 import streamlit as st
 from utils import *
 
-st.title("Flashcards Chat")
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
+st.title("Flashcards Chat")
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
 
@@ -22,7 +22,20 @@ for message in st.session_state.messages:
 # Input for generating a new flashcard
 topic = st.text_input("Enter a topic to generate a flashcard:")
 if topic:
-    flashcard = generate_flashcard(topic)
+      stream = client.chat.completions.create(
+        model=st.session_state["openai_model"],
+        prompt=f"Generate a flashcard about: {topic}",
+        max_tokens=150,
+        messages=[
+            {"role": m["role"], "content": m["content"]}
+            for m in st.session_state.messages
+        ],
+        stream=True,
+    )
+    response = next(stream)['message']['content']
+    question, answer = response.text.split(';')  # Assuming the model returns 'question;answer'
+    flashcard = {"question": question.strip(), "answer": answer.strip()}
+    # flashcard = generate_flashcard(topic)
     st.session_state.flashcards.append(flashcard)
 
 # Displaying flashcards
