@@ -26,7 +26,7 @@ def generate_flashcard(topic):
         prompt=f"Generate a flashcard about: {topic}",
         max_tokens=150
     )
-    question, answer = response.choices[0].text.split(';')  # Assuming the model returns 'question;answer'
+    question, answer = response.text.split(';')  # Assuming the model returns 'question;answer'
     return {"question": question.strip(), "answer": answer.strip()}
 
 # Input for generating a new flashcard
@@ -56,6 +56,6 @@ if prompt := st.chat_input("What is up?"):
             ],
             stream=True,
         )
-        response = next(stream)['choices'][0]['message']['content']
+        response = next(stream)['message']['content']
         st.write(response)
     st.session_state.messages.append({"role": "assistant", "content": response})
