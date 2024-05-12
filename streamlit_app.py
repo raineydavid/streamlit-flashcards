@@ -21,7 +21,7 @@ for message in st.session_state.messages:
 # Input for generating a new flashcard
 topic = st.text_input("Enter a topic to generate a flashcard:")
 if topic:
-      stream = client.chat.completions.create(
+    stream = client.chat.completions.create(
         model=st.session_state["openai_model"],
         prompt=f"Generate a flashcard about: {topic}",
         max_tokens=150,
