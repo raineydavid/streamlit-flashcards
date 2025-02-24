@@ -6,7 +6,7 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.title("Flashcards Chat")
 if "openai_model" not in st.session_state:
-    st.session_state["openai_model"] = st.secrets["OPENAI_API_MODEL"],"gpt-4o-mini")
+    st.session_state["openai_model"] = st.secrets["OPENAI_API_MODEL","gpt-4o-mini"]
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
